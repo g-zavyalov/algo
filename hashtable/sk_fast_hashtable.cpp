@@ -1,3 +1,4 @@
+// by @Burunduk1
 template <const int max_size, class HashType, class Data, const Data default_value>
 struct hashTable {
   HashType hash[max_size];
