@@ -1,9 +1,12 @@
-struct STNode {
+struct Node {
     int x;
-    STNode() : x(0) {}
-    STNode(int _) : x(_) {}
-    STNode operator*(STNode &r) { return x + r.x; }
+    Node() : x(0) {}
+    Node(int _) : x(_) {}
+    operator int() const { return x; }
+
 };
+
+Node operator*(const Node &l, const Node &r) { return Node(l.x + r.x); }
 
 template<class T>
 struct SegmentTree {
