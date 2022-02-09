@@ -32,5 +32,5 @@ SUBCOMMANDS:
 
 ```console
 foo@bar:~$ git clone https://github.com/g-zavyalov/algo
-foo@bar:~$ mv .algo/* ~/.snippets
+foo@bar:~$ mv ./algo/* ~/.snippets
 ```
