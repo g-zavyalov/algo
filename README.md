@@ -30,7 +30,5 @@ SUBCOMMANDS:
 
 ## Installation with SNPM
 
-```console
-foo@bar:~$ git clone https://github.com/g-zavyalov/algo
-foo@bar:~$ mv ./algo/* ~/.snippets
-```
+* git clone
+* move files in algo to ~/.snippets
