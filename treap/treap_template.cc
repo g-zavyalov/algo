@@ -34,6 +34,7 @@ struct TreapNode {
     
     int size = 1;
     int mn = INT_MAX;
+    int rev = 0;
 
     TreapNode(int _) {
         x = _, y = rnd();
@@ -50,8 +51,17 @@ void update (Node v) {
     v->mn = min({v->x, mn(v->l), mn(v->r)});
 }
 
+void push(Node v) {
+    if (!v || !v->rev) return;
+    swap(v->l, v->r);
+    if (v->l) v->l->rev ^= 1;
+    if (v->r) v->r->rev ^= 1;
+    v->rev = 0;
+}
+
 void print(Node v) {
     if (!v) { return; }
+    push(v);
     print(v->l); dbg(v->x, v->mn, v->size); print(v->r);
 }
 
@@ -59,23 +69,9 @@ void print(Node v) {
 struct Treap {
     Node tree = 0;
 
-    pair<Node, Node> split(int x) {
-        if (!tree) return {0, 0};
-        if (size(tree->l) + 1 <= x) {
-            auto [l, r] = split(tree->r, x - size(tree->l) - 1);
-            tree->r = l;
-            update(tree);
-            return {tree, r};
-        } else {
-            auto [l, r] = split(tree->l, x);
-            tree->l = r;
-            update(tree);
-            return {l, tree};
-        }
-    }
-
     pair<Node, Node> split(Node v, int x) {
         if (!v) return {0, 0};
+        push(v);
         if (size(v->l) + 1 <= x) {
             auto [l, r] = split(v->r, x - size(v->l) - 1);
             v->r = l;
@@ -89,8 +85,13 @@ struct Treap {
         }
     }
 
+    pair<Node, Node> split(int x) {
+        return split(tree, x);
+    }
+
     Node merge(Node l, Node r) {
         if (!l || !r) return max(l, r);
+        push(l), push(r);
         if (l->y > r->y) {
             l->r = merge(l->r, r);
             update(l);
@@ -106,10 +107,9 @@ struct Treap {
         tree = merge(tree, new TreapNode(x));
     }
 
-    int apply(int l, int r, function<int(Node)> f) {
+    int apply(int l, int r, function<int(Node)> f) { // [ )
         auto [T, R] = split(tree, r);
         auto [L, M] = split(T, l);
-        print(M);
         int res = f(M);
         tree = merge(L, merge(M, R));
         return res;
@@ -128,7 +128,10 @@ void solve() {
     int q; cin >> q;
     while (q--) {
         int l, r; cin >> l >> r;
-        cout << treap.apply(l, r, mn) << '\n';
+        treap.apply(l, r, [](Node v) {
+            v->rev = 1;
+            return 0;
+        });
         print(tree);
     }
 
