@@ -107,6 +107,7 @@ struct LCA {
 };
 
 void solve() {
+    // Reading graph
     int n; cin >> n;
     int root; cin >> root;
     Graph G(n);
@@ -117,6 +118,7 @@ void solve() {
         G.add_edge(a - 1, b - 1);
     }
 
+    // Usage
     LCA<Graph> lca(G);
     int q; cin >> q;
     while (q--) {
