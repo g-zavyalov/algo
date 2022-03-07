@@ -45,7 +45,7 @@ struct Treap {
     pair<Node, Node> split(Node v, int x) {
         if (!v) return {0, 0};
         push(v);
-        if (size(v->l) + 1 <= x) {
+        if (size(v->l) < x) {
             auto [l, r] = split(v->r, x - size(v->l) - 1);
             v->r = l;
             update(v);
