@@ -45,7 +45,7 @@ struct Treap {
     pair<Node, Node> split(Node v, int x) {
         if (!v) return {0, 0};
         push(v);
-        if (size(v->l) < x) {
+        if (size(v->l) + 1 <= x) {
             auto [l, r] = split(v->r, x - size(v->l) - 1);
             v->r = l;
             update(v);
@@ -65,7 +65,8 @@ struct Treap {
     Node merge(Node l, Node r) {
         if (!l || !r) return max(l, r);
         push(l), push(r);
-        if (l->y > r->y) {
+        // heuristics perfection : )
+        if (int(rnd() % (size(l) + size(r))) < size(l)) { 
             l->r = merge(l->r, r);
             update(l);
             return l;
